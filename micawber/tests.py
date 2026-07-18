@@ -208,9 +208,8 @@ class ProviderTestCase(BaseTestCase):
         self.assertRaises(InvalidResponseException, pr.request, 'http://bad')
 
     def test_non_object_json(self):
-        # Non-object JSON must raise InvalidResponseException like malformed JSON,
-        # not TypeError (extract/parse only catch ProviderException).
-        bodies = ['[]', 'null', '"url and title"', '123', 'true']
+        # Non-object JSON must raise InvalidResponseException.
+        bodies = ['[]', 'null', '"url and title"', '123', 'true', 'false']
         for body in bodies:
             pr = ProviderRegistry()
             class BadProvider(Provider):

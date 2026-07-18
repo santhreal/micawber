@@ -62,7 +62,7 @@ class Provider(object):
         except ValueError as exc:
             raise InvalidResponseException(str(exc)) from exc
 
-        # oEmbed bodies must be objects; non-dicts confuse `'url' in ...` and leak TypeError.
+        # oEmbed responses must be JSON objects.
         if not isinstance(json_data, dict):
             raise InvalidResponseException('Response is not a JSON object')
 
