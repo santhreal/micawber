@@ -18,7 +18,7 @@ try:
 except ImportError:
     flask = None
 from micawber.contrib.providers import GoogleMapsProvider
-from micawber.parsers import full_handler
+from micawber.parsers import full_handler, inline_handler
 from micawber.test_utils import test_pr, test_cache, test_pr_cache, TestProvider, BaseTestCase
 
 
@@ -244,6 +244,23 @@ class EscapingTestCase(BaseTestCase):
         resp = test_pr.request('http://video-test1')
         self.assertEqual(full_handler('http://video-test1', resp),
                          '<test1>video</test1>')
+
+
+    def test_photo_without_title_renders(self):
+        data = {
+            'type': 'photo',
+            'url': 'http://img.example/a.jpg',
+            'width': 10,
+            'height': 10,
+        }
+        expected = (
+            '<a href="http://img.example/a.jpg" title="http://img.example/a.jpg">'
+            '<img alt="http://img.example/a.jpg" src="http://img.example/a.jpg" /></a>')
+        self.assertEqual(full_handler('http://page.example/x', data), expected)
+        self.assertEqual(
+            inline_handler('http://page.example/x', data),
+            '<a href="http://img.example/a.jpg" title="http://img.example/a.jpg">'
+            'http://img.example/a.jpg</a>')
 
 
 class PickleCacheTestCase(unittest.TestCase):
