@@ -37,7 +37,7 @@ def _escape_data(response_data):
     # The url and title in a provider response frequently contain end-user
     # content (e.g. video titles) and cannot be trusted in html.
     # oEmbed title is optional; fall back to url when absent.
-    url = response_data.get('url', '')
+    url = response_data['url']
     title = response_data.get('title', url)
     return {
         'url': escape(str(url)),
